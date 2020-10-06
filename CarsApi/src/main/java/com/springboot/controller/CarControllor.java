@@ -3,6 +3,8 @@ package com.springboot.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,28 +26,46 @@ public class CarControllor {
 	private CarService carService;
 	
 	@GetMapping("/search")
-	public List<Car> getAvaliableCars() {
-		return carService.getAvaliableCars();
+	public ResponseEntity<List<Car>> getAvaliableCars() {
+		return ResponseEntity.ok(carService.getAvaliableCars());
 	}
 	
 	@PutMapping("/rent/{carid}")
-	public Car rent (@RequestBody Car car,@PathVariable Integer carid) {
-		return carService.rent(carid,car);
+	public ResponseEntity<Car> rent (@RequestBody Car car,@PathVariable Integer carid) {
+		Car rentedCar=carService.rent(carid,car);
+		if(rentedCar==null) {
+		    return ResponseEntity.notFound().build();
+		}
+		else {
+			return ResponseEntity.ok(rentedCar);
+		}
 	}
 	
 	@PutMapping("/release/{carid}")
-	public Car release(@PathVariable Integer carid) {
-		return carService.release(carid);
+	public ResponseEntity<Car> release(@PathVariable Integer carid) {
+		Car car=carService.release(carid);
+		if(car==null) {
+		    return ResponseEntity.notFound().build();
+		}
+		else {
+			return ResponseEntity.ok(car);
+		}
 	}
 	
 	@GetMapping("/search/{carid}")
-	public Car getCarById(@PathVariable Integer carid) {
-		return carService.getCarById(carid);
+	public ResponseEntity<Car> getCarById(@PathVariable Integer carid) {
+		Car car=carService.getCarById(carid);
+		if(car==null) {
+		    return ResponseEntity.notFound().build();
+		}
+		else {
+			return ResponseEntity.ok(car);
+		}
 	}
 	
 	@PostMapping(value="/add")
-	public Car addTopic(@RequestBody Car car) {
-		return carService.addCar(car);
+	public ResponseEntity<Car> addTopic(@RequestBody Car car) {
+		return ResponseEntity.ok(carService.addCar(car));
 	}
 
 	

@@ -1,10 +1,15 @@
 package com.springboot.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,60 +18,80 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springboot.DTOs.CarDTO;
 import com.springboot.model.Car;
 import com.springboot.service.CarService;
 
-
-
-
+@Validated 
 @RestController
 public class CarControllor {
 
 	@Autowired
 	private CarService carService;
 	
+	 @Autowired
+    private ModelMapper modelMapper;
+	
+	 
 	@GetMapping("/search")
-	public ResponseEntity<List<Car>> getAvaliableCars() {
-		return ResponseEntity.ok(carService.getAvaliableCars());
+	public ResponseEntity<List<CarDTO>> getAvaliableCars() {
+		return ResponseEntity.ok(carService.getAvaliableCars().stream().map(this::convertToDto).collect(Collectors.toList()));
 	}
 	
+	
 	@PutMapping("/rent/{carid}")
-	public ResponseEntity<Car> rent (@RequestBody Car car,@PathVariable Integer carid) {
+	public ResponseEntity<CarDTO> rent (@RequestBody @Valid  CarDTO carDto,@PathVariable Integer carid) {
+		
+        Car car = convertToEntity(carDto);
+
 		Car rentedCar=carService.rent(carid,car);
+	     
 		if(rentedCar==null) {
 		    return ResponseEntity.notFound().build();
 		}
 		else {
-			return ResponseEntity.ok(rentedCar);
+			return ResponseEntity.ok(convertToDto(rentedCar));
 		}
 	}
 	
+	
 	@PutMapping("/release/{carid}")
-	public ResponseEntity<Car> release(@PathVariable Integer carid) {
+	public ResponseEntity<CarDTO> release(@PathVariable Integer carid) {
+	 
 		Car car=carService.release(carid);
 		if(car==null) {
 		    return ResponseEntity.notFound().build();
 		}
 		else {
-			return ResponseEntity.ok(car);
+			return ResponseEntity.ok(convertToDto(car));
 		}
+		
 	}
 	
 	@GetMapping("/search/{carid}")
-	public ResponseEntity<Car> getCarById(@PathVariable Integer carid) {
+	public ResponseEntity<CarDTO> getCarById(@PathVariable Integer carid) {
+		
 		Car car=carService.getCarById(carid);
 		if(car==null) {
 		    return ResponseEntity.notFound().build();
 		}
 		else {
-			return ResponseEntity.ok(car);
+			return ResponseEntity.ok(convertToDto(car));
 		}
 	}
 	
-	@PostMapping(value="/add")
-	public ResponseEntity<Car> addTopic(@RequestBody Car car) {
-		return ResponseEntity.ok(carService.addCar(car));
-	}
 
+	
+	private CarDTO convertToDto(Car car) {
+		CarDTO carDto = modelMapper.map(car, CarDTO.class);
+	    return carDto;
+	}
+	
+	
+	private Car convertToEntity(CarDTO carDto) {
+	    Car car = modelMapper.map(carDto, Car.class);
+	    return car;
+	}
+	
 	
 }

@@ -30,6 +30,7 @@ public class CarService {
 		if(!rentedCar.isPresent()) {
 			return null;
 		}
+		
 		else {
 			rentedCar.get().setIsRented(true);
 			rentedCar.get().setCustomerFName(car.getCustomerFName());

@@ -14,31 +14,29 @@ public class CarDTO {
 	@Min(value=1,message="id number can't be smaller than 1")
 	private Integer id;
 	
-	
 	private String model;
-
 	
 	@NotNull(message="First name can't be null")
-    @Size(min = 3, max = 15, message="First name can't be null")
+	@Size(min = 3, max = 15, message="First name can't be null")
 	private String customerFName;
 	
 	@NotNull(message="Last name can't be null")
-    @Size(min = 3, max = 15)
+	@Size(min = 3, max = 15)
 	private String customerLName;
 	
 	@NotNull(message = "Phone number is required")
-    @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$",
-             message="Mobile number is invalid")
+	@Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$",
+	         message="Mobile number is invalid")
 	private String customerPhone;
 	
 	private String customerAddress;
 	
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @NotNull(message = "Please provide a pickupDate.")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@NotNull(message = "Please provide a pickupDate.")
 	private Date pickupDate;
     
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @NotNull(message = "Please provide a returnDate.")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@NotNull(message = "Please provide a returnDate.")
 	private Date returnDate;
 	
 

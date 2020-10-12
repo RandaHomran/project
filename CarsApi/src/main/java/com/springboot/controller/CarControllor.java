@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import com.springboot.dtos.CarDTO;
+
+import com.springboot.dto.CarDTO;
 import com.springboot.exception.CarNotFoundException;
 import com.springboot.model.Car;
 import com.springboot.service.CarService;
@@ -28,7 +29,6 @@ public class CarControllor {
 	@Autowired
 	private ModelMapper modelMapper;
 	
-	 
 	@GetMapping("/search")
 	public ResponseEntity<List<CarDTO>> getAvaliableCars()  {
 		return ResponseEntity.ok(carService.getAvaliableCars().stream().map(this::convertToDto).collect(Collectors.toList()));

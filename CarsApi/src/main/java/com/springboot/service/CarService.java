@@ -45,7 +45,6 @@ public class CarService {
 		car.get().setCustomerAddress(null);
 		return carRepository.save(car.get());
 	}
-
 	
 	public Car getCarById(Integer carid) {
 		Optional<Car> car= carRepository.findById(carid);
@@ -53,10 +52,9 @@ public class CarService {
 		return carRepository.findById(carid).get();
 	}
 	
-	
 	public void findCar(Optional<Car> car) {
 		if(!car.isPresent()) {
-			throw new CarNotFoundException("Car not found");
+			throw new CarNotFoundException();
 		}
 	}
 }

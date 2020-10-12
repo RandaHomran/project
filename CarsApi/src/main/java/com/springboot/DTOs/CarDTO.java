@@ -1,4 +1,4 @@
-package com.springboot.DTOs;
+package com.springboot.dtos;
 
 import java.sql.Date;
 

@@ -1,10 +1,7 @@
 package com.springboot.controller;
-
 import java.util.List;
 import java.util.stream.Collectors;
-
 import javax.validation.Valid;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,9 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
 import org.springframework.web.bind.annotation.RestController;
-
 import com.springboot.dtos.CarDTO;
 import com.springboot.exception.CarNotFoundException;
 import com.springboot.model.Car;
@@ -31,7 +26,7 @@ public class CarControllor {
 	private CarService carService;
 	
 	@Autowired
-    private ModelMapper modelMapper;
+	private ModelMapper modelMapper;
 	
 	 
 	@GetMapping("/search")
@@ -42,8 +37,8 @@ public class CarControllor {
 	
 	@PutMapping("/rent/{carid}")
 	public ResponseEntity<CarDTO> rent (@RequestBody @Valid  CarDTO carDto,@PathVariable Integer carid) throws CarNotFoundException  {
-        Car car= convertToEntity(carDto);
-		Car rentedCar= carService.rent(carid,car);
+		Car car= convertToEntity(carDto);
+		Car rentedCar=carService.rent(carid,car);
 		return ResponseEntity.ok(convertToDto(rentedCar));
 	}
 	
@@ -63,13 +58,13 @@ public class CarControllor {
 
 	
 	private CarDTO convertToDto(Car car) {
-		CarDTO carDto = modelMapper.map(car, CarDTO.class);
+		CarDTO carDto=modelMapper.map(car, CarDTO.class);
 	    return carDto;
 	}
 	
 	
 	private Car convertToEntity(CarDTO carDto) {
-	    Car car = modelMapper.map(carDto, Car.class);
+	    Car car=modelMapper.map(carDto, Car.class);
 	    return car;
 	}
 	

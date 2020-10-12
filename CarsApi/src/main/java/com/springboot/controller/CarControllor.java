@@ -34,7 +34,6 @@ public class CarControllor {
 		return ResponseEntity.ok(carService.getAvaliableCars().stream().map(this::convertToDto).collect(Collectors.toList()));
 	}
 	
-	
 	@PutMapping("/rent/{carid}")
 	public ResponseEntity<CarDTO> rent (@RequestBody @Valid  CarDTO carDto,@PathVariable Integer carid) throws CarNotFoundException  {
 		Car car= convertToEntity(carDto);
